@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { dispatch } from "../store";
 
 const initialState = {
   sidebar: {
@@ -18,7 +17,7 @@ const slice = createSlice({
     },
 
     updateSidebarType(state, action) {
-      state.sidebar.type = action.payload.type; 
+      state.sidebar.type = action.payload.type;
     },
   },
 });
@@ -27,13 +26,13 @@ const slice = createSlice({
 export default slice.reducer;
 
 export function ToggleSidebar() {
-  return async () => {
+  return async (dispatch, getState) => {
     dispatch(slice.actions.toggleSidebar());
   };
 }
 
 export function updateSidebarType(type) {
-  return async () => {
+  return async (dispatch, getState) => {
     dispatch(
       slice.actions.updateSidebarType({
         type,
