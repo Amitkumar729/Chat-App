@@ -16,9 +16,47 @@ import Logo from "../../assets/Images/logo.ico";
 import { Nav_Buttons, Profile_Menu } from "../../data";
 import { faker } from "@faker-js/faker";
 import AntSwitch from "../../components/AntSwitch";
+import { useNavigate } from "react-router-dom";
+
+const getPath = (idx) => {
+  switch (idx) {
+    case 0:
+      return "/app";
+
+    case 1:
+      return "/group";
+
+    case 2:
+      return "/call";
+
+    case 3:
+      return "/settings";
+
+    default:
+      break;
+  }
+};
+
+const geteMenuPath = (idx) => {
+  switch (idx) {
+    case 0:
+      return "/profile";
+
+    case 1:
+      return "/settings";
+
+    case 2:
+      //TODO update the token & set the value of the isAuthenticated = false....
+      return "/auth/login";
+
+    default:
+      break;
+  }
+};
 
 const SideBar = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [selected, setSelected] = useState(0);
   const { onToggleMode } = useSettings();
 
@@ -93,6 +131,7 @@ const SideBar = () => {
                 <IconButton
                   onClick={() => {
                     setSelected(item.index);
+                    navigate(getPath(item.index));
                   }}
                   sx={{
                     width: "max-content",
@@ -130,6 +169,7 @@ const SideBar = () => {
             ) : (
               <IconButton // inactive setting
                 onClick={() => {
+                  navigate(getPath(3));
                   setSelected(3);
                 }}
                 sx={{
@@ -154,7 +194,7 @@ const SideBar = () => {
             defaultChecked
           />
           <Avatar
-            sx={{cursor: "pointer"}}
+            sx={{ cursor: "pointer" }}
             id="basic-button"
             aria-controls={open ? "basic-menu" : undefined}
             aria-haspopup="true"
@@ -171,22 +211,27 @@ const SideBar = () => {
             MenuListProps={{
               "aria-labelledby": "basic-button",
             }}
-
             anchorOrigin={{
               vertical: "bottom",
               horizontal: "right",
             }}
-
             transformOrigin={{
               vertical: "bottom",
-              horizontal: "left",              
+              horizontal: "left",
             }}
-             
           >
             <Stack spacing={1} px={1}>
-              {Profile_Menu.map((item) => (
-                <MenuItem onClick={handleClick}>
+              {Profile_Menu.map((item, idx) => (
+                <MenuItem
+                  onClick={() => {
+                    handleClick();
+                   
+                  }}
+                >
                   <Stack
+                  onClick={() => {
+                    navigate(geteMenuPath(idx))
+                  }}
                     sx={{ width: 100 }}
                     direction={"row"}
                     alignItems={"center"}
