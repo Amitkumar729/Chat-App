@@ -3,15 +3,21 @@ import axios from "../../utils/axios";
 // import { Axios } from "axios";
 
 const initialState = {
+  isLoading: false,
   isLoggedIn: false,
   token: "",
-  isLoading: false,
+  email: "",
+  error: false,
 };
 
 const slice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    updateIsLoading(state, action) {
+      state.error = action.payload.error;
+      state.isLoading = action.payload.isLoading;
+    },
     logIn(state, action) {
       state.isLoggedIn = action.payload.isLoggedIn;
       state.token = action.payload.action;
@@ -19,6 +25,9 @@ const slice = createSlice({
     signOut(state, action) {
       state.isLoggedIn = false;
       state.token = "";
+    },
+    updateRegisterEmail(state, action) {
+      state.email = action.payload.email;
     },
   },
 });
@@ -105,8 +114,80 @@ export function NewPassword(formValues) {
       )
       .then((response) => {
         console.log(response);
+        dispatch(
+          slice.actions.logIn({
+            isLoggedIn: true,
+            token: response.data.token,
+          })
+        );
       })
       .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
+//Register user...
+export function RegisterUser(formValues) {
+  return async (dispatch, getState) => {
+    dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
+    await axios
+      .post(
+        "/auth/register",
+        { ...formValues },
+        { headers: { "Content-Type": "application/json" } }
+      )
+      .then((response) => {
+        console.log(response);
+        dispatch(
+          slice.actions.updateRegisterEmail({ email: formValues.email })
+        );
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: false })
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: true })
+        );
+      })
+      .finally(() => {
+        if (!getState().auth.error) {
+          window.location.href = "/auth/verify";
+        }
+      });
+  };
+}
+
+//Verify OTP...
+export function VerifyEmail(formValues) {
+  return async (dispatch, getState) => {
+    // dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
+
+    await axios
+      .post(
+        "/auth/verify",
+        {
+          ...formValues,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+
+        dispatch(
+          slice.actions.logIn({
+            isLoggedIn: true,
+            token: response.data.token,
+          })
+        );
+      })
+      .catch(function (error) {
         console.log(error);
       });
   };

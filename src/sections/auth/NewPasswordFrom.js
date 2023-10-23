@@ -1,5 +1,5 @@
 import React from "react";
-import { Link as RouterLink, useParams } from "react-router-dom";
+import {   useParams } from "react-router-dom";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -10,12 +10,11 @@ import {
   Button,
   IconButton,
   InputAdornment,
-  Link,
   Stack,
 } from "@mui/material";
 import { RHFTextField } from "../../components/hook-form";
 import { Eye, EyeSlash } from "phosphor-react";
-import { common } from "@mui/material/colors";
+ 
 import { useDispatch } from "react-redux";
 import { NewPassword } from "../../redux/slices/auth";
 
@@ -47,7 +46,7 @@ const NewPasswordForm = () => {
     reset,
     setError,
     handleSubmit,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors },
   } = methods;
 
   const onSubmit = async (data) => {
