@@ -1,7 +1,7 @@
 import { Box, IconButton, Stack, Typography, useTheme } from "@mui/material";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { updateSidebarType } from "../redux/slices/app";
+import { UpdateSidebarType } from "../redux/slices/app";
 import { CaretLeft } from "phosphor-react";
 import { Message } from "./Conversation/Message";
 
@@ -31,7 +31,7 @@ const StarredMessages = () => {
           >
             <IconButton
               onClick={() => {
-                dispatch(updateSidebarType("CONTACT"));
+                dispatch(UpdateSidebarType("CONTACT"));
               }}
             >
               <CaretLeft />

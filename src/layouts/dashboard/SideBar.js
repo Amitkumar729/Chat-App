@@ -202,7 +202,7 @@ const SideBar = () => {
             aria-controls={open ? "basic-menu" : undefined}
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
-            onClick={handleClick}
+            onClick={ (event) => handleClick(event)}
             size={24}
             src={faker.image.avatar()}
           />
@@ -226,21 +226,19 @@ const SideBar = () => {
             <Stack spacing={1} px={1}>
               {Profile_Menu.map((item, idx) => (
                 <MenuItem
-                  onClick={() => {
-                    handleClick();
-                    
-                   
+                  onClick={(event) => {
+                    handleClick(event);
                   }}
                 >
                   <Stack
-                  onClick={() => {
-                    //if idx is 2 then dispatch logout...
-                    if(idx === 2){
-                      dispatch(LogOutUser());
-                    } else {
-                      navigate(geteMenuPath(idx))
-                    }
-                  }}
+                    onClick={() => {
+                      //if idx is 2 then dispatch logout...
+                      if (idx === 2) {
+                        dispatch(LogOutUser());
+                      } else {
+                        navigate(geteMenuPath(idx));
+                      }
+                    }}
                     sx={{ width: 100 }}
                     direction={"row"}
                     alignItems={"center"}
